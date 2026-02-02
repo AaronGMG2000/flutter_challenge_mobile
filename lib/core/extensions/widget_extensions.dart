@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 extension WidgetExtension on Widget {
-  Widget onHero(String tag) => Hero(tag: tag, child: this);
+  Widget onHero(String tag) => Hero(
+    tag: tag,
+    child: Material(type: MaterialType.transparency, child: this),
+  );
 
   Widget get inScroll => SingleChildScrollView(physics: const BouncingScrollPhysics(), child: this);
   Widget inScrollF(ScrollPhysics physics) => SingleChildScrollView(physics: physics, child: this);

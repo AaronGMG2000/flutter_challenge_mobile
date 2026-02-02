@@ -8,7 +8,7 @@ abstract class UserStoryRemoteDatasource {
 }
 
 class UserStoryRemoteDatasourceImpl implements UserStoryRemoteDatasource {
-  final Dio dio = Dio();
+  final Dio dio = Dio(BaseOptions(headers: {'Connection': 'keep-alive'}, validateStatus: (status) => true));
 
   @override
   Future<List<StoryModel>> getStories() async {

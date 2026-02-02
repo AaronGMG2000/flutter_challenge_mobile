@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge_model/core/extensions/widget_extensions.dart';
 import 'package:flutter_challenge_model/features/user_story/presentation/providers/story_provider.dart';
-import 'package:flutter_challenge_model/features/user_story/presentation/widgets/post_widget.dart';
+import 'package:flutter_challenge_model/features/user_story/presentation/screens/comment_page.dart' show CommentPage;
+import 'package:flutter_challenge_model/features/user_story/presentation/widgets/card_post_widget.dart';
 import 'package:flutter_challenge_model/features/user_story/presentation/widgets/search_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_challenge_model/features/settings/presentation/providers/settings_provider.dart';
@@ -40,17 +41,24 @@ class StoryPage extends ConsumerWidget {
               ),
               Expanded(
                 child: stories.when(
-                  data: (stories) => ListView.builder(
-                    itemCount: stories.length,
-                    itemBuilder: (context, index) {
-                      return PostWidget(
-                        story: stories[index],
-                        onLike: () {
-                          ref.read(storiesProvider.notifier).like(stories[index]);
-                        },
-                        onComment: () {},
-                      );
+                  data: (stories) => RefreshIndicator(
+                    onRefresh: () async {
+                      ref.read(storiesProvider.notifier).reload();
                     },
+                    child: ListView.builder(
+                      itemCount: stories.length,
+                      itemBuilder: (context, index) {
+                        return CardPostWidget(
+                          story: stories[index],
+                          onLike: () {
+                            ref.read(storiesProvider.notifier).like(stories[index]);
+                          },
+                          onComment: () {
+                            Navigator.pushNamed(context, CommentPage.routeName, arguments: stories[index].id);
+                          },
+                        );
+                      },
+                    ),
                   ),
                   error: (error, stackTrace) => const Center(child: Text('Error')),
                   loading: () => const Center(child: CircularProgressIndicator()),

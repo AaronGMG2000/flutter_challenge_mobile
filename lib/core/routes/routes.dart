@@ -12,7 +12,7 @@ class AppRouter {
       case StoryPage.routeName:
         return getRoute(const StoryPage(), settings);
       case CommentPage.routeName:
-        return getRoute(const CommentPage(), settings);
+        return getRoute(CommentPage(storyId: settings.arguments as int), settings);
       default:
         return getRoute(const StoryPage(), settings);
     }
