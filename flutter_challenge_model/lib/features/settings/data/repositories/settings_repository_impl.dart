@@ -36,7 +36,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<Either<Failure, String>> saveLanguage(String language) async {
     try {
-      return Right(await _storage.set(LocalStorage.languageCode, language));
+      await _storage.set(LocalStorage.languageCode, language);
+      return Right(language);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
@@ -45,7 +46,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<Either<Failure, int>> savePrimaryColor(int colorValue) async {
     try {
-      return Right(await _storage.set(LocalStorage.primaryColor, colorValue));
+      await _storage.set(LocalStorage.primaryColor, colorValue);
+      return Right(colorValue);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
@@ -54,7 +56,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<Either<Failure, int>> saveTheme(int theme) async {
     try {
-      return Right(await _storage.set(LocalStorage.themeStatus, theme));
+      await _storage.set(LocalStorage.themeStatus, theme);
+      return Right(theme);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }

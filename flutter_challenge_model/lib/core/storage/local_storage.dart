@@ -33,7 +33,7 @@ class LocalStorage {
   }
 
   // Métodos más directos
-  Future<dynamic> set(String key, dynamic value) async {
+  Future<void> set(String key, dynamic value) async {
     if (value is bool) await _prefs.setBool(key, value);
     if (value is String) await _prefs.setString(key, value);
     if (value is int) await _prefs.setInt(key, value);

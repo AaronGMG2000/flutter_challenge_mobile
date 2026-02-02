@@ -29,6 +29,17 @@ class Stories extends _$Stories {
   void changeStoryLike(Story story) {
     state = AsyncData(state.value!.map((s) => s.id == story.id ? story : s).toList());
   }
+
+  Future<void> like(Story story) async {
+    final storyProvider = ref.read(storyRepositoryProvider);
+    if (!story.isLiked) {
+      await storyProvider.likeStory(story.id);
+      changeStoryLike(story.copyWith(isLiked: true));
+    } else {
+      await storyProvider.unlikeStory(story.id);
+      changeStoryLike(story.copyWith(isLiked: false));
+    }
+  }
 }
 
 @riverpod
@@ -40,26 +51,6 @@ class SearchStory extends _$SearchStory {
 
   void setSearch(String search) {
     state = search;
-  }
-}
-
-@riverpod
-class LikeStory extends _$LikeStory {
-  @override
-  Future<void> build() async {}
-
-  Future<void> like(Story story) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final storyProvider = ref.read(storyRepositoryProvider);
-      if (!story.isLiked) {
-        await storyProvider.likeStory(story.id);
-        ref.read(storiesProvider.notifier).changeStoryLike(story.copyWith(isLiked: true));
-      } else {
-        await storyProvider.unlikeStory(story.id);
-        ref.read(storiesProvider.notifier).changeStoryLike(story.copyWith(isLiked: false));
-      }
-    });
   }
 }
 

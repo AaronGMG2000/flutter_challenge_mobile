@@ -14,9 +14,21 @@ class StoryPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(settingsProvider);
+    final provider = ref.read(settingsProvider.notifier);
     final stories = ref.watch(filterStoriesByNameProvider);
     final search = ref.watch(searchStoryProvider);
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(provider.isDark ? Icons.dark_mode : Icons.light_mode),
+            onPressed: () {
+              final newIndex = provider.isDark ? 1 : 2;
+              provider.setTheme(newIndex);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -34,7 +46,7 @@ class StoryPage extends ConsumerWidget {
                       return PostWidget(
                         story: stories[index],
                         onLike: () {
-                          ref.read(likeStoryProvider.notifier).like(stories[index]);
+                          ref.read(storiesProvider.notifier).like(stories[index]);
                         },
                         onComment: () {},
                       );

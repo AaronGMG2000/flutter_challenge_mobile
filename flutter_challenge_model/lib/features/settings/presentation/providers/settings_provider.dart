@@ -64,10 +64,15 @@ class Settings extends _$Settings with WidgetsBindingObserver {
 
   Future<void> setTheme(int index) async {
     final result = await ref.read(saveThemeUseCaseProvider)(index);
-    result.fold((failure) => null, (successIndex) {
-      state = state.copyWith(themeIndex: successIndex, themeMode: ThemeMode.values[successIndex]);
-      _updateAppStyle();
-    });
+    result.fold(
+      (failure) {
+        return null;
+      },
+      (successIndex) {
+        state = state.copyWith(themeIndex: successIndex, themeMode: ThemeMode.values[successIndex]);
+        _updateAppStyle();
+      },
+    );
   }
 
   Future<void> setPrimaryColor(Color color) async {
@@ -89,7 +94,6 @@ class Settings extends _$Settings with WidgetsBindingObserver {
   void _updateAppStyle() {
     final isDarkTheme = isDark;
     AppColors.update(isDark: isDarkTheme, primaryColor: state.primaryColor);
-    // Incrementar version para forzar la notificación de cambios
     state = state.copyWith(version: state.version + 1);
   }
 
