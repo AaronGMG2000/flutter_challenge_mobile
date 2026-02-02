@@ -1,0 +1,15 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+    exclude:
+        - '**/*.freezed.dart'
+        - '**/*.g.dart'
+        - '**/lang/generated/**'
+        - '**/l10n/**'
+
+    errors:
+        invalid_annotation_target: ignore
+
+linter:
+    rules:
+        prefer_const_constructors: true
