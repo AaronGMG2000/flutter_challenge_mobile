@@ -10,5 +10,6 @@ abstract class AppSettings with _$AppSettings {
     required int themeIndex,
     required Color primaryColor,
     Locale? locale,
+    @Default(0) int version, // Para forzar actualizaciones reactivas
   }) = _AppSettings;
 }

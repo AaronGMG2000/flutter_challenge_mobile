@@ -1,17 +1,22 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_challenge_model/features/settings/presentation/providers/settings_provider.dart';
 import 'app_colors.dart';
 import 'app_fonts.dart';
 
 class AppStyle {
-  static final AppStyle _instance = AppStyle._internal();
+  final AppColors colors;
+  final AppFonts fonts;
 
-  AppStyle._internal();
+  AppStyle._({required this.colors, required this.fonts});
 
-  static AppStyle get instance => _instance;
+  static AppStyle of(WidgetRef ref) {
+    final settings = ref.watch(settingsProvider);
+    final provider = ref.read(settingsProvider.notifier);
+    final isDark = provider.isDark;
 
-  AppColors get _color => AppColors.current;
-  AppFonts get _font => AppFonts.current;
+    final colors = AppColors(isDark: isDark, primaryColor: settings.primaryColor);
+    final fonts = AppFonts(colors);
 
-  static AppColors get colors => _instance._color;
-  static AppFonts get fonts => _instance._font;
-  static AppFonts get font => _instance._font;
+    return AppStyle._(colors: colors, fonts: fonts);
+  }
 }

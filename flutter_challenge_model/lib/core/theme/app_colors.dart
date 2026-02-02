@@ -6,6 +6,10 @@ class AppColors {
 
   AppColors._(this.isDark, this.primaryColor);
 
+  factory AppColors({required bool isDark, required Color primaryColor}) {
+    return AppColors._(isDark, primaryColor);
+  }
+
   static bool _isDark = false;
   static Color _primaryColor = const Color(0xFFE88B0B);
 

@@ -50,7 +50,6 @@ class Settings extends _$Settings with WidgetsBindingObserver {
     final colorRes = await repo.getPrimaryColor();
     final langRes = await repo.getLanguage();
 
-    // Actualizamos el estado con los valores recuperados de disco
     themeRes.fold(
       (failure) => null,
       (index) => state = state.copyWith(themeIndex: index, themeMode: ThemeMode.values[index]),
@@ -88,11 +87,13 @@ class Settings extends _$Settings with WidgetsBindingObserver {
   }
 
   void _updateAppStyle() {
-    final isDarkTheme = _isDark;
+    final isDarkTheme = isDark;
     AppColors.update(isDark: isDarkTheme, primaryColor: state.primaryColor);
+    // Incrementar version para forzar la notificación de cambios
+    state = state.copyWith(version: state.version + 1);
   }
 
-  bool get _isDark {
+  bool get isDark {
     if (state.themeMode == ThemeMode.dark) return true;
     if (state.themeMode == ThemeMode.light) return false;
     return SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;

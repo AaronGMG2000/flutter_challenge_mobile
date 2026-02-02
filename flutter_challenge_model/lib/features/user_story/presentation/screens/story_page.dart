@@ -4,6 +4,7 @@ import 'package:flutter_challenge_model/features/user_story/presentation/provide
 import 'package:flutter_challenge_model/features/user_story/presentation/widgets/post_widget.dart';
 import 'package:flutter_challenge_model/features/user_story/presentation/widgets/search_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_challenge_model/features/settings/presentation/providers/settings_provider.dart';
 
 class StoryPage extends ConsumerWidget {
   static const String routeName = 'StoryPage';
@@ -12,6 +13,7 @@ class StoryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(settingsProvider);
     final stories = ref.watch(filterStoriesByNameProvider);
     final search = ref.watch(searchStoryProvider);
     return Scaffold(
